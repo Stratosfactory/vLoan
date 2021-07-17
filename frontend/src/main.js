@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-
+import ConfirmationService from 'primevue/confirmationservice';
 
 
 const app = createApp(App)
@@ -18,5 +18,6 @@ import "primeicons/primeicons.css"
 app.use(router)
 app.use(store)
 app.use(PrimeVue);
+app.use(ConfirmationService);
 
 app.mount('#app')

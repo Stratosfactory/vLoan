@@ -2,6 +2,8 @@
   <div class="home">
      <img src="..\..\assets\Vloan.svg">
      <p class="logoTitle">_vLoan</p>
+     
+     
   </div>
 </template>
 
@@ -13,8 +15,8 @@ export default {
 
 <style scoped>
 img{
-  width:40%;
-  height: 40%;
+  width:50vh;
+  height: 50vh;
 
 }
 
@@ -22,13 +24,16 @@ img{
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  margin-top:20%;
+  justify-content: center;
+  height: 98vh;
+  
   
 }
 
+
+
 .logoTitle{
   font-family: 'Chakra Petch', sans-serif;
-  font-size: 90px;
+  font-size: 6rem;
 }
 </style>

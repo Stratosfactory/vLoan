@@ -23,18 +23,17 @@ export default {
       navCollapsed: false,
     };
   },
-  methods:{
-    changeMargin(bool){
+  methods: {
+    changeMargin(bool) {
       this.navCollapsed = bool;
-    }
-  }
-
+    },
+  },
 };
 </script>
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap");
 
 #app {
   font-family: "Roboto Slab", serif;
@@ -45,14 +44,16 @@ export default {
 }
 
 html {
-  background: #f8f9fa;
+  background: var(--bg-main);
 }
 
 :root {
-  --bg-main: #f8f9fa;
-  --bg-s1: rgb(56, 77, 109);;
+  --bg-main: #eaebec;
+  --bg-s1: rgb(56, 77, 109);
+
   --fc-s1: #ffffff;
-  --fc-s2:gold;
+  --fc-s2: gold;
+  --ac-s1: rgb(0, 140, 255);
 }
 
 .extended {
@@ -82,9 +83,84 @@ html {
     margin-left: 100px;
   }
 }
-
-header{
-  font-size: 50px;
- font-family: 'Chakra Petch', sans-serif;
+main{
+  margin-right:10px;
 }
+
+header {
+  font-size: 50px;
+  margin-bottom: 1vh;
+  font-family: "Chakra Petch", sans-serif;
+  text-align: left;
+}
+
+.button-main {
+  background: var(--bg-s1);
+  color: var(--fc-s1);
+  font-family: "Roboto Slab", serif;
+  font-size: 1.3rem;
+  border-radius: 5px !important;
+  cursor: pointer;
+  
+  }
+
+.button-main:hover {
+  color: var(--fc-s2);
+  transform: scale(1.02);
+}
+
+.deleteButton-inline {
+  background: rgb(250, 34, 77);
+  color: var(--fc-s1);
+  border: rgb(0, 0, 0) solid 1px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.deleteButton-inline:hover {
+  background: rgb(197, 15, 51);
+  transform: scale(1.01);
+}
+
+.overlayDelete {
+  background: crimson !important;
+}
+
+label {
+  font-size: 1.1rem;
+}
+
+input {
+  border: 1px solid var(--bg-s1);
+  border-radius: 3px;
+  height: 25px;
+  font-family: "Roboto Slab", serif;
+  font-size: 1.08rem;
+}
+
+input:hover {
+  border: 1px solid var(--ac-s1);
+}
+
+input:focus {
+  outline: none !important;
+  box-shadow: 0px 0px 3px 0px var(--ac-s1);    
+}
+
+select {
+  border: 1px solid var(--bg-s1);
+  border-radius: 3px;
+  height: 25px;
+  font-family: "Roboto Slab", serif;
+  font-size: 1.08rem;
+}
+
+select:hover {
+    box-shadow: 0px 0px 3px 0px var(--ac-s1);    
+}
+
+select:focus {
+      box-shadow: 0px 0px 3px 0px var(--ac-s1);     
+}
+
 </style>
