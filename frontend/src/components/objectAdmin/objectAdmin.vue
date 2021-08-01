@@ -2,10 +2,11 @@
   <div>
     <header>My Objects</header>
 
-    <add-object></add-object>
+    <add-object @object-added="getObjects()"></add-object>
+    <div class="responseDisplay"></div>
     <ConfirmDialog rejectClass="p-button-danger"></ConfirmDialog>
     <section>
-      <DataTable :value="dummy">
+      <DataTable :value="objects">
         <Column
           field="productFamily"
           header="Product Family"
@@ -29,6 +30,7 @@
           :sortable="true"
         ></Column>
         <Column field="timeStamp" header="Added On" :sortable="true"> </Column>
+        <Column field="email" header="Created By" :sortable="true"> </Column>
         <Column :exportable="false">
           <template #body="slotProps">
             <button @click="deleteEntry(slotProps)" class="deleteButton-inline">
@@ -45,7 +47,8 @@
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ConfirmDialog from "primevue/confirmdialog";
-import addObject from "./addObject.vue"
+import addObject from "./addObject.vue";
+import axios from "axios";
 export default {
   components: {
     DataTable,
@@ -55,36 +58,10 @@ export default {
   },
   data() {
     return {
-      dummy: [
-        {
-          productFamily: "Familiy A",
-          model: "Model X",
-          referenceNumber: "123.456",
-          serialNumber: "123456",
-          material: "Gold",
-          releaseDate: "2021",
-          timeStamp: new Date(),
-        },
-        {
-          productFamily: "Familiy B",
-          model: "Model Y",
-          referenceNumber: "123.456",
-          serialNumber: "123456",
-          material: "Gold",
-          releaseDate: "2021",
-          timeStamp: new Date(),
-        },
-
-        {
-          productFamily: "Familiy C",
-          model: "Model Z",
-          referenceNumber: "123.456",
-          serialNumber: "123456",
-          material: "Gold",
-          releaseDate: "2021",
-          timeStamp: new Date(),
-        },
-      ],
+      objects: [],
+      response: {
+        type: null,
+      },
     };
   },
   methods: {
@@ -96,18 +73,40 @@ export default {
         icon: "pi pi-exclamation-triangle",
         acceptClass: "overlayDelete",
         accept: () => {
-          //callback to execute when user confirms the action
+          axios.post("http://localhost:3000/vloanapi/objects/deleteobject",{
+            _id:data.data._id
+          })
+          .then(()=>{
+            this.getObjects()
+          })
+          .catch((err)=>{
+            console.log(err);
+           this.$toast.add({ severity: "error", summary: err.response.data.message });
+          })
         },
         reject: () => {
           //callback to execute when user rejects the action
         },
       });
     },
+    getObjects() {
+      axios
+        .get("http://localhost:3000/vloanapi/objects/getobject")
+        .then((res) => {
+          this.objects = res.data.objects;
+          
+        })
+        .catch((err) => {
+          console.log(err);
+           this.$toast.add({ severity: "error", summary: err.response.data.message });
+        });
+    },
+  },
+  mounted() {
+    this.getObjects();
   },
 };
 </script>
 
 <style scoped>
-
-
 </style>

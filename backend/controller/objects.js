@@ -1,0 +1,84 @@
+const loanObject = require("../models/objectSchema")
+const jwt = require("jsonwebtoken")
+
+exports.createObject = ((req, res, next) => {
+
+    const email = req.body.email
+    const productFamily = req.body.productFamily
+    const model = req.body.model
+    const referenceNumber = req.body.referenceNumber
+    const serialNumber = req.body.serialNumber
+    const material = req.body.material
+    const releaseDate = req.body.releaseDate
+    const timeStamp = new Date()
+    const currentOwner = "undefined"
+
+    loanObject.findOne({ serialNumber: serialNumber })
+        .then((foundObject) => {
+            if (foundObject) {
+                const error = new Error("Object already exits")
+
+                error.statusCode = 406
+                next(error)
+            } else {
+                const newLoanObject = new loanObject({
+                    email: email,
+                    productFamily: productFamily,
+                    model: model,
+                    referenceNumber: referenceNumber,
+                    serialNumber: serialNumber,
+                    material: material,
+                    timeStamp: timeStamp,
+                    currentOwner: currentOwner,
+                    releaseDate: releaseDate,
+                })
+                console.log(req.body)
+                newLoanObject.save()
+                    .then(() => {
+
+                        res.status(200).json({ message: "Object created" })
+                    })
+                    .catch((err) => {
+
+                        const error = new Error("Object invalid - Try again")
+                        error.statusCode = 401
+                        next(error)
+                    })
+
+            }
+        })
+
+
+
+});
+
+exports.getObject = ((req, res, next) => {
+    loanObject.find()
+        .then((objects) => {
+
+            res.status(200).json({
+                message: "Success ",
+                objects: objects,
+            })
+        })
+        .catch((err) => { console.log("Failed to fetch data form MongoDB" + err) })
+});
+
+exports.deleteObject = ((req, res, next) => {
+    const _id = req.body._id
+    loanObject.findByIdAndDelete(_id)
+        .then(() => {
+                res.status(200).json({
+                    message: "Object successfully deleted",
+                })
+            }
+
+
+        )
+        .catch((err) => {
+            const error = new Error("Couldn't delete object")
+            error.statusCode = 400
+            next(error);
+            console.log(err)
+        })
+})

@@ -3,6 +3,7 @@
     <sidenav @nav-collapse="changeMargin"></sidenav>
     <main :class="[navCollapsed ? 'collapsed' : 'extended']">
       <topnav></topnav>
+     <Toast />
       <router-view></router-view>
     </main>
   </div>
@@ -11,12 +12,14 @@
 <script>
 import topnav from "./components/navigation/topnav.vue";
 import sidenav from "./components/navigation/sidenav.vue";
+import Toast from 'primevue/toast';
 
 export default {
   name: "App",
   components: {
     topnav,
     sidenav,
+    Toast,
   },
   data() {
     return {
@@ -54,6 +57,7 @@ html {
   --fc-s1: #ffffff;
   --fc-s2: gold;
   --ac-s1: rgb(0, 140, 255);
+  
 }
 
 .extended {
@@ -83,8 +87,8 @@ html {
     margin-left: 100px;
   }
 }
-main{
-  margin-right:10px;
+main {
+  margin-right: 10px;
 }
 
 header {
@@ -97,14 +101,28 @@ header {
 .button-main {
   background: var(--bg-s1);
   color: var(--fc-s1);
-  font-family: "Roboto Slab", serif;
+  font-family: "Chakra Petch", sans-serif;
   font-size: 1.3rem;
   border-radius: 5px !important;
   cursor: pointer;
-  
-  }
+}
 
 .button-main:hover {
+  color: var(--fc-s2);
+  transform: scale(1.02);
+}
+
+.button-secondary {
+  font-family: "Chakra Petch", sans-serif;
+  background: var(--bg-s1);
+  font-size: 1.1rem;
+  cursor: pointer;
+  color:white;
+  border:black 1px solid;
+  border-radius: 3px;
+ 
+}
+.button-secondary:hover{
   color: var(--fc-s2);
   transform: scale(1.02);
 }
@@ -144,7 +162,7 @@ input:hover {
 
 input:focus {
   outline: none !important;
-  box-shadow: 0px 0px 3px 0px var(--ac-s1);    
+  box-shadow: 0px 0px 3px 0px var(--ac-s1);
 }
 
 select {
@@ -156,11 +174,10 @@ select {
 }
 
 select:hover {
-    box-shadow: 0px 0px 3px 0px var(--ac-s1);    
+  box-shadow: 0px 0px 3px 0px var(--ac-s1);
 }
 
 select:focus {
-      box-shadow: 0px 0px 3px 0px var(--ac-s1);     
+  box-shadow: 0px 0px 3px 0px var(--ac-s1);
 }
-
 </style>
