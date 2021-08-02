@@ -127,49 +127,7 @@ export default {
 </script>
 
 <style scoped>
-.addNew {
-  display: flex;
-  padding: 5px 5px 20px 5px;
-}
 
-.inputMenu {
-  display: flex;
-  flex-wrap: wrap;
-  border: 1px solid var(--bg-s1);
-  padding: 10px 10px 10px 10px;
-  border-radius: 3px;
-  box-shadow: 2px 5px 16px 2px var(--bg-s1);
-  margin: 20px 0 20px 0;
-}
-.menuitem {
-  display: flex;
-  flex-direction: column;
-  width: 42%;
-  margin-right: 6vw;
-  padding: 10px 10px 10px 10px;
-}
 
-.menuitem label {
-  align-self: flex-start;
-}
-
-@media only screen and (max-width: 1200px) {
-  .menuitem {
-    width: 100%;
-  }
-  .menuitem button {
-    width: 33% !important;
-    align-self: center !important;
-    height: 100% !important;
-  }
-}
-
-.menuitem button {
-  width: 50%;
-  align-self: flex-end;
-  height: 80%;
-  margin-top: auto;
-  margin-bottom: auto;
-}
 </style>
 

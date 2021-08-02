@@ -53,6 +53,7 @@ html {
 :root {
   --bg-main: #eaebec;
   --bg-s1: rgb(56, 77, 109);
+  --bg-s2:rgba(56, 77, 109,0.2);
 
   --fc-s1: #ffffff;
   --fc-s2: gold;
@@ -179,5 +180,58 @@ select:hover {
 
 select:focus {
   box-shadow: 0px 0px 3px 0px var(--ac-s1);
+}
+
+ /* Add new button */
+
+.addNew {
+  display: flex;
+  padding: 5px 5px 20px 5px;
+}
+ /* Input Menu and Item */
+ 
+.inputMenu {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid var(--bg-s1);
+  padding: 10px 10px 10px 10px;
+  border-radius: 3px;
+  box-shadow: 2px 5px 16px 2px var(--bg-s1);
+  margin: 20px 0 20px 0;
+}
+.menuitem {
+  display: flex;
+  flex-direction: column;
+  width: 42%;
+  margin-right: 6vw;
+  padding: 10px 10px 10px 10px;
+}
+
+.menuitem label {
+  align-self: flex-start;
+}
+
+@media only screen and (max-width: 1200px) {
+  .menuitem {
+    width: 100%;
+  }
+  .menuitem button {
+    width: 33% !important;
+    align-self: center !important;
+    height: 100% !important;
+  }
+}
+
+.menuitem button {
+  width: 50%;
+  align-self: flex-end;
+  height: 80%;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.p-button {
+ background: var(--bg-s1) !important;
+
 }
 </style>
