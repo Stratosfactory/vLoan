@@ -44,9 +44,10 @@
         <label> Added On </label>
         <input disabled :value="new Date().toLocaleDateString()" />
       </div>
-      <div class="menuitem">
+      <div class="menuitem menubutton">
         <button class="button-secondary" @click="submitObject()">Submit</button>
       </div>
+     
     </div>
   </section>
 </template>

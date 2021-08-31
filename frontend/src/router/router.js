@@ -29,7 +29,7 @@ const routes = [{
         name: "Lending Platform",
         component: vlender,
         meta: {
-            icon: "pi pi-user-edit"
+            icon: "pi pi-reply"
         },
 
     },

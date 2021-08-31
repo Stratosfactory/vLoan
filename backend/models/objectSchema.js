@@ -2,14 +2,6 @@ const mongoose = require("mongoose")
 const schema = mongoose.Schema
 
 
-const loanHistorySchema = new schema({
-    loanReason: { type: String },
-    email: { type: String },
-    startDate: { type: Date },
-    endDate: { type: Date }
-})
-
-
 const objectSchema = new schema({
     email: { type: String, required: true },
     productFamily: { type: String, required: true },
@@ -20,7 +12,15 @@ const objectSchema = new schema({
     releaseDate: { type: String, required: true },
     timeStamp: { type: Date, required: true },
     currentOwner: { type: String },
-    loanHistory: [loanHistorySchema]
+    loanHistory: [{
+
+        loanName: { type: String },
+        email: { type: String },
+        loanStartDate: { type: Date },
+        loanEndDate: { type: Date },
+        workflowState: { type: String } //Possible Entry States: Submitted, Reviewed, Approved, Rejected}
+
+    }]
 
 })
 

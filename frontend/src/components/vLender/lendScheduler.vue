@@ -1,12 +1,12 @@
 <template>
   <section>
     <div class="addNew">
-      <button class="button-main">Schedule Loan</button>
+      <button class="button-main" @click="displayMenu()">Schedule Loan</button>
     </div>
-    <div class="inputMenu">
+    <div class="inputMenu" v-if="menuClicked">
       <div class="menuitem">
-        <label>Event Purpose</label>
-        <select>
+        <label>Loan Purpose</label>
+        <select v-model="inputValues.loanPurpose">
           <option>Event</option>
           <option>Photoshooting</option>
           <option>Testing</option>
@@ -14,39 +14,49 @@
       </div>
       <div class="menuitem">
         <label>Loan Name (e.g. Event name)</label>
-        <input />
+        <input v-model="inputValues.loanName" />
       </div>
       <div class="menuitem">
         <label>Contact Persons name</label>
-        <input />
+        <input v-model="inputValues.contactPerson"/>
       </div>
       <div class="menuitem">
         <label>Contact Persons email</label>
-        <input />
+        <input v-model="inputValues.contactEmail" />
       </div>
 
       <div class="menuitem">
         <label>Loan Start Date</label>
-        <input type="date" />
+        <input type="date" v-model="inputValues.loanStart" />
       </div>
 
       <div class="menuitem">
         <label>Loan End Date</label>
-        <input type="date" />
+        <input type="date" v-model="inputValues.loanEnd" />
       </div>
-      <div class="menuitem picker">
-        <PickList v-model="pickerData" dataKey="_id">
-          <template #item="slotProps">
-            <div class="picker-item">
-              <p><span>Family:</span> {{ slotProps.item.productFamily }}</p>
-              <p><span>Reference:</span>{{ slotProps.item.referenceNumber }}</p>
-              <p><span>Serial No:</span> {{ slotProps.item.serialNumber }}</p>
-              <p><span>Name:</span> {{ slotProps.item.model }}</p>
-            </div>
-          </template>
-        </PickList>
+
+      <div class="menuitem picker-outter">
+        <label>Select Objects</label>
+        <div class="picker">
+          <PickList v-model="pickerData" dataKey="_id">
+            <template #item="slotProps">
+              <div class="picker-item">
+                <p><span>Family:</span> {{ slotProps.item.productFamily }}</p>
+                <p>
+                  <span>Reference:</span>{{ slotProps.item.referenceNumber }}
+                </p>
+                <p><span>Serial No:</span> {{ slotProps.item.serialNumber }}</p>
+                <p><span>Name:</span> {{ slotProps.item.model }}</p>
+              </div>
+            </template>
+          </PickList>
+        </div>
+      </div>
+      <div class="menuitem menubutton">
+        <button class="button-secondary" @click="submitObject()">Submit</button>
       </div>
     </div>
+    <p>{{ inputValues }}</p>
   </section>
 </template>
 
@@ -61,6 +71,15 @@ export default {
   data() {
     return {
       pickerData: [[], []],
+      menuClicked: false,
+      inputValues: {
+        loanPurpose: null,
+        loanName: null,
+        contactPerson: null,
+        contactEmail: null,
+        loanStart: null,
+        loanEnd: null,
+      },
     };
   },
   methods: {
@@ -78,6 +97,24 @@ export default {
           });
         });
     },
+    displayMenu() {
+      if (this.menuClicked) {
+        this.menuClicked = false;
+      } else {
+        this.menuClicked = true;
+      }
+    },
+    submitObject() {
+      axios.post("http://localhost:3000/vloanapi/events/createevent", {
+        loanPurpose: this.inputValues.loanPurpose,
+        loanName: this.inputValues.loanName,
+        contactPerson: this.inputValues.contactPerson,
+        contactEmail: this.inputValues.contactEmail,
+        loanStart: this.inputValues.loanStart,
+        loanEnd: this.inputValues.loanEnd,
+        objects:this.pickerData[1]
+      });
+    },
   },
   mounted() {
     this.getObjects();
@@ -86,9 +123,15 @@ export default {
 </script>
 
 <style scoped>
+.picker-outter {
+  width: 200%;
+}
 .picker {
-  width: 80%;
+  width: 100%;
   margin: auto;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 4px 4px 4px 4px;
 }
 
 .picker-item {

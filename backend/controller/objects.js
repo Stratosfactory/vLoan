@@ -1,5 +1,6 @@
 const loanObject = require("../models/objectSchema")
 const jwt = require("jsonwebtoken")
+const { validationResult } = require("express-validator")
 
 exports.createObject = ((req, res, next) => {
 
@@ -13,6 +14,14 @@ exports.createObject = ((req, res, next) => {
     const timeStamp = new Date()
     const currentOwner = "undefined"
 
+    const validationErrors = validationResult(req)
+
+    if (!validationErrors.isEmpty()) {
+        console.log(validationErrors)
+        const error = new Error("Loan Object contains invalid data")
+        error.statusCode = 422
+        throw error;
+    }
     loanObject.findOne({ serialNumber: serialNumber })
         .then((foundObject) => {
             if (foundObject) {

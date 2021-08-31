@@ -3,7 +3,7 @@
     <sidenav @nav-collapse="changeMargin"></sidenav>
     <main :class="[navCollapsed ? 'collapsed' : 'extended']">
       <topnav></topnav>
-     <Toast />
+      <Toast />
       <router-view></router-view>
     </main>
   </div>
@@ -12,7 +12,7 @@
 <script>
 import topnav from "./components/navigation/topnav.vue";
 import sidenav from "./components/navigation/sidenav.vue";
-import Toast from 'primevue/toast';
+import Toast from "primevue/toast";
 
 export default {
   name: "App",
@@ -53,12 +53,11 @@ html {
 :root {
   --bg-main: #eaebec;
   --bg-s1: rgb(56, 77, 109);
-  --bg-s2:rgba(56, 77, 109,0.2);
+  --bg-s2: rgba(56, 77, 109, 0.2);
 
   --fc-s1: #ffffff;
   --fc-s2: gold;
   --ac-s1: rgb(0, 140, 255);
-  
 }
 
 .extended {
@@ -118,12 +117,11 @@ header {
   background: var(--bg-s1);
   font-size: 1.1rem;
   cursor: pointer;
-  color:white;
-  border:black 1px solid;
+  color: white;
+  border: black 1px solid;
   border-radius: 3px;
- 
 }
-.button-secondary:hover{
+.button-secondary:hover {
   color: var(--fc-s2);
   transform: scale(1.02);
 }
@@ -182,14 +180,14 @@ select:focus {
   box-shadow: 0px 0px 3px 0px var(--ac-s1);
 }
 
- /* Add new button */
+/* Add new button */
 
 .addNew {
   display: flex;
   padding: 5px 5px 20px 5px;
 }
- /* Input Menu and Item */
- 
+/* Input Menu and Item */
+
 .inputMenu {
   display: flex;
   flex-wrap: wrap;
@@ -222,16 +220,20 @@ select:focus {
   }
 }
 
-.menuitem button {
-  width: 50%;
+.menubutton {
+  width: 100%;
+}
+
+.menubutton button {
+  height: 2.7rem;
+  width: 25%;
   align-self: flex-end;
-  height: 80%;
+
   margin-top: auto;
   margin-bottom: auto;
 }
 
 .p-button {
- background: var(--bg-s1) !important;
-
+  background: var(--bg-s1) !important;
 }
 </style>

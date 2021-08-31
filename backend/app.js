@@ -4,7 +4,9 @@ const mongoose = require("mongoose")
 
 const app = express();
 const verification = require("./routes/verification");
-const input = require("./routes/create")
+const objectRoute = require("./routes/objectRoute");
+const eventRoute = require("./routes/eventRoute");
+
 
 app.use(express.json());
 
@@ -17,7 +19,8 @@ app.use((req, res, next) => {
 })
 
 app.use("/vloanapi", verification);
-app.use("/vloanapi", input)
+app.use("/vloanapi", objectRoute);
+app.use("/vloanapi", eventRoute);
 
 
 

@@ -8,7 +8,7 @@
         <i class="pi pi-list"></i>Object Administrator</router-link
       >
       <router-link to="/loan">
-        <i class="pi pi-user-edit"></i>Lending Platform</router-link
+        <i class="pi pi-reply"></i>Lending Platform</router-link
       >
       <router-link to="/inventory">
         <i class="pi pi-book"></i>Inventory Manager</router-link
@@ -33,7 +33,7 @@
         <i class="pi pi-list"></i
       ></router-link>
       <router-link to="/loan">
-        <i class="pi pi-user-edit"></i
+        <i class="pi pi-reply"></i
       ></router-link>
       <router-link to="/inventory">
         <i class="pi pi-book"></i

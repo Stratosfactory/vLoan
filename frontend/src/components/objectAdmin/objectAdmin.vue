@@ -40,6 +40,7 @@
         </Column>
       </DataTable>
     </section>
+    
   </div>
 </template>
 
@@ -93,7 +94,13 @@ export default {
       axios
         .get("http://localhost:3000/vloanapi/objects/getobject")
         .then((res) => {
+          
           this.objects = res.data.objects;
+          
+          for(let object of this.objects){
+            object.timeStamp = new Date(object.timeStamp).toLocaleString()
+          }
+          
           
         })
         .catch((err) => {
