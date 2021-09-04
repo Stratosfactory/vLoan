@@ -14,7 +14,7 @@ exports.createEvent = ((req, res, next) => {
     const contactEmail = req.body.contactEmail
     const loanStartDate = new Date(req.body.loanStart)
     const loanEndDate = new Date(req.body.loanEnd)
-    const workflowState = "Submitted"
+    const workflowState = { status: "Submitted", owner: "test@test.de" }
 
 
 
@@ -24,6 +24,7 @@ exports.createEvent = ((req, res, next) => {
         loanStartDate: loanStartDate,
         loanEndDate: loanEndDate,
         workflowState: workflowState,
+        eventID: null,
     }
 
 
@@ -37,7 +38,7 @@ exports.createEvent = ((req, res, next) => {
     }
 
     if (loanStartDate > loanEndDate) {
-        const error = new Error("End date cant be before start date")
+        const error = new Error("End date can't be before start date")
         error.statusCode = 422
         throw error;
     }
@@ -51,6 +52,7 @@ exports.createEvent = ((req, res, next) => {
         for (let object of objects) {
             dbResponse = await loanObject.findById(object._id).catch(err => console.log(err));
             dbArr.push(dbResponse)
+
         }
         return dbArr
     }
@@ -89,17 +91,7 @@ exports.createEvent = ((req, res, next) => {
                 error.statusCode = 400
                 next(error)
             } else {
-                for (object of objects) {
-                    loanObject.findById(object._id)
-                        .then((foundObject) => {
-                            foundObject.loanHistory.push(historyObject)
-                            foundObject.save()
-                        })
-                        .catch(err => {
-                            console.log(err)
 
-                        })
-                }
 
                 const newEvent = new Event({
                     objects: objects,
@@ -109,16 +101,63 @@ exports.createEvent = ((req, res, next) => {
                     contactEmail: contactEmail,
                     loanStartDate: loanStartDate,
                     loanEndDate: loanEndDate,
-                    workflowState: "Submitted",
+                    workflowState: workflowState
                 })
                 newEvent.save()
+                    .then((res) => {
+                            historyObject.eventID = res._id
+
+                            for (object of objects) {
+                                loanObject.findById(object._id)
+                                    .then((foundObject) => {
+                                        foundObject.loanHistory.push(historyObject)
+                                        foundObject.save()
+                                            .catch(() => {
+                                                const error = new Error("Failed to add insert data into loan object")
+                                                error.statusCode(400)
+                                                throw error
+                                            })
+                                    })
+                                    .catch(err => {
+                                        console.log(err)
+
+                                    })
+                            }
+
+                        }
+
+
+
+
+                    )
                     .then(res.status(200).json({ message: `Loan event ${loanName} created` }))
+                    .catch((err) => console.log(err))
+
+
+
             }
         })
 
 
-    .then((res) => console.log(res))
+
 
     .catch((err) => console.log(err))
 
+})
+
+
+exports.getEvents = ((req, res, next) => {
+    Event.find()
+        .then((foundEvents) => {
+            res.status(200).json({
+                message: "Success",
+                events: foundEvents
+            })
+        })
+        .catch((err) => {
+            let error = new Error("Error while fetching events")
+            error.statusCode = 400
+            next(error)
+            console.log(err)
+        })
 })

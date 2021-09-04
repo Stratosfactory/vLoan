@@ -14,4 +14,6 @@ router.post("/events/createevent", [
     body("loanEnd").trim().isDate()
 ], eventController.createEvent)
 
+router.get("/events/getevents", eventController.getEvents)
+
 module.exports = router

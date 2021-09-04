@@ -18,7 +18,8 @@ const objectSchema = new schema({
         email: { type: String },
         loanStartDate: { type: Date },
         loanEndDate: { type: Date },
-        workflowState: { type: String } //Possible Entry States: Submitted, Reviewed, Approved, Rejected}
+        workflowState: { type: Object }, //Possible Entry States: Submitted, Reviewed, Approved, Rejected},
+        eventID: { type: schema.Types.ObjectId }
 
     }]
 

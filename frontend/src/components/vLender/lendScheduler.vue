@@ -18,7 +18,7 @@
       </div>
       <div class="menuitem">
         <label>Contact Persons name</label>
-        <input v-model="inputValues.contactPerson"/>
+        <input v-model="inputValues.contactPerson" />
       </div>
       <div class="menuitem">
         <label>Contact Persons email</label>
@@ -56,7 +56,6 @@
         <button class="button-secondary" @click="submitObject()">Submit</button>
       </div>
     </div>
-    <p>{{ inputValues }}</p>
   </section>
 </template>
 
@@ -105,15 +104,27 @@ export default {
       }
     },
     submitObject() {
-      axios.post("http://localhost:3000/vloanapi/events/createevent", {
-        loanPurpose: this.inputValues.loanPurpose,
-        loanName: this.inputValues.loanName,
-        contactPerson: this.inputValues.contactPerson,
-        contactEmail: this.inputValues.contactEmail,
-        loanStart: this.inputValues.loanStart,
-        loanEnd: this.inputValues.loanEnd,
-        objects:this.pickerData[1]
-      });
+      axios
+        .post("http://localhost:3000/vloanapi/events/createevent", {
+          loanPurpose: this.inputValues.loanPurpose,
+          loanName: this.inputValues.loanName,
+          contactPerson: this.inputValues.contactPerson,
+          contactEmail: this.inputValues.contactEmail,
+          loanStart: this.inputValues.loanStart,
+          loanEnd: this.inputValues.loanEnd,
+          objects: this.pickerData[1],
+        })
+        .then((res) => {
+          this.$toast.add({ severity: "success", summary: res.data.message });
+          this.$emit("objectAdded");
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$toast.add({
+            severity: "error",
+            summary: err.response.data.message,
+          });
+        });
     },
   },
   mounted() {
