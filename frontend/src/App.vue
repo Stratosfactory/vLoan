@@ -54,10 +54,15 @@ html {
   --bg-main: #eaebec;
   --bg-s1: rgb(56, 77, 109);
   --bg-s2: rgba(56, 77, 109, 0.2);
+  --bg-s3: white;
+
 
   --fc-s1: #ffffff;
   --fc-s2: gold;
   --ac-s1: rgb(0, 140, 255);
+  --ac-good:rgba(105, 250, 100, 0.596);
+  --ac-neutral:rgba(33, 79, 179, 0.473);
+  --ac-bad:rgba(179, 13, 68, 0.493);
 }
 
 .extended {

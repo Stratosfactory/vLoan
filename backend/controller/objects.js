@@ -62,7 +62,16 @@ exports.createObject = ((req, res, next) => {
 });
 
 exports.getObject = ((req, res, next) => {
-    loanObject.find()
+
+    let params
+    if (req.query.objectId) {
+        params = { "_id": { $in: req.query.objectId } }
+    } else {
+        params = {}
+    }
+
+
+    loanObject.find(params)
         .then((objects) => {
 
             res.status(200).json({
@@ -72,6 +81,8 @@ exports.getObject = ((req, res, next) => {
         })
         .catch((err) => { console.log("Failed to fetch data form MongoDB" + err) })
 });
+
+
 
 exports.deleteObject = ((req, res, next) => {
     const _id = req.body._id
@@ -90,4 +101,30 @@ exports.deleteObject = ((req, res, next) => {
             next(error);
             console.log(err)
         })
+})
+
+exports.getTargetObject = ((req, res, next) => {
+    const idArray = req.body.objects
+
+
+    const getObjects = async(objects) => {
+        let responseArray = []
+        for await (let object of objects) {
+            loanObject.findById(object._id)
+                .then((dbResponse) => {
+                    responseArray.push(dbResponse)
+                    console.log(dbResponse)
+                })
+                .catch(err => console.log(err))
+        }
+        return responseArray
+    }
+
+    getObjects(idArray)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+
+
+
+
 })

@@ -18,4 +18,6 @@ router.get("/objects/getobject", objectsController.getObject)
 
 router.post("/objects/deleteobject", objectsController.deleteObject)
 
+router.post("/objects/gettargetobject", objectsController.getTargetObject)
+
 module.exports = router;
