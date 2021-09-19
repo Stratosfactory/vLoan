@@ -82,10 +82,14 @@ export default {
       events: null,
     };
   },
+  computed: {},
+
   methods: {
     getEvents() {
       axios
-        .get("http://localhost:3000/vloanapi/events/getevents")
+        .get("http://localhost:3000/vloanapi/events/getevents", {
+          params: this.setEventFilters,
+        })
         .then((res) => {
           this.events = res.data.events;
           for (let item of this.events) {
@@ -155,8 +159,7 @@ export default {
   background: var(--bg-s2);
   border-radius: 5px;
   margin: 0 10px !important;
-  text-align: left
-  ;
+  text-align: left;
 }
 .timeline p {
   background: var(--bg-s3);
@@ -237,27 +240,23 @@ export default {
 .picker-item {
   display: flex;
   padding: 0 0.5rem;
-  
+
   border-radius: 4px;
   background: var(--bg-s3);
   width: calc(50% - 10px);
   flex-wrap: wrap;
 }
 
-.picker-item p{
-  width:50%;
-  
-  
- }
+.picker-item p {
+  width: 50%;
+}
 
- .picker-item span{
-  font-weight: bold; 
+.picker-item span {
+  font-weight: bold;
+}
 
- }
-
-.loanobjectDetails{
+.loanobjectDetails {
   display: flex;
   flex-wrap: wrap;
 }
-
 </style>

@@ -147,7 +147,43 @@ exports.createEvent = ((req, res, next) => {
 
 
 exports.getEvents = ((req, res, next) => {
-    Event.find()
+
+
+    //loanStartDate
+    //loanEndDate
+    //loanPurpose
+    //workflowState  //entspricht loanStatus der Query
+    //loanName
+    let QueryParams = {}
+
+    if ("loanStartDate" in req.query && req.query.loanStartDate != "") {
+        QueryParams["loanStartDate"] = { $gte: new Date(req.query.loanStartDate) }
+    }
+
+    if ("loanEndDate" in req.query && req.query.loanEndDate != "") {
+        QueryParams["loanEndDate"] = { $lte: new Date(req.query.loanEndDate) }
+    }
+
+    if ("loanPurpose" in req.query && req.query.loanPurpose != "") {
+        QueryParams["loanPurpose"] = req.query.loanPurpose
+    }
+
+    if ("loanName" in req.query && req.query.loanName != "") {
+        QueryParams["loanName"] = { $regex: req.query.loanName, $options: "i" }
+
+    }
+
+    if ("loanStatus" in req.query && req.query.loanStatus != "") {
+        QueryParams["workflowState.status"] = req.query.loanStatus
+
+    }
+
+
+    console.log(QueryParams)
+
+
+
+    Event.find(QueryParams)
         .then((foundEvents) => {
             res.status(200).json({
                 message: "Success",
