@@ -10,8 +10,11 @@
       <router-link to="/loan">
         <i class="pi pi-reply"></i>Lending Platform</router-link
       >
-      <router-link to="/inventory">
-        <i class="pi pi-book"></i>Inventory Manager</router-link
+      <router-link to="/insights">
+        <i class="pi pi-eye"></i>Object Insights</router-link
+      >
+      <router-link to="/insights">
+        <i class="pi pi-check-square"></i>My Loan Tasks</router-link
       >
 
       <div class="expand">
@@ -26,17 +29,12 @@
     </div>
     <div class="navigation-slim" v-if="slimNavigation">
       <img src="..\..\assets\Vloan.svg" class="logo-small" />
-      <router-link to="/">
-        <i class="pi pi-home"></i
-      ></router-link>
-      <router-link to="/objects" >
-        <i class="pi pi-list"></i
-      ></router-link>
-      <router-link to="/loan">
-        <i class="pi pi-reply"></i
-      ></router-link>
-      <router-link to="/inventory">
-        <i class="pi pi-book"></i
+      <router-link to="/"> <i class="pi pi-home"></i></router-link>
+      <router-link to="/objects"> <i class="pi pi-list"></i></router-link>
+      <router-link to="/loan"> <i class="pi pi-reply"></i></router-link>
+      <router-link to="/insights"> <i class="pi pi-eye"></i></router-link>
+      <router-link to="/myTasks">
+        <i class="pi pi-check-square"></i
       ></router-link>
 
       <div class="expand">
@@ -141,7 +139,7 @@ i {
 }
 
 .expand i:hover {
- color: var(--fc-s2);
+  color: var(--fc-s2);
   transform: scale(1.05);
   cursor: pointer;
 }
