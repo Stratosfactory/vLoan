@@ -3,6 +3,7 @@
     <header>My Objects</header>
 
     <add-object @object-added="getObjects()"></add-object>
+    <filter-menu></filter-menu>
     <div class="responseDisplay"></div>
     <ConfirmDialog rejectClass="p-button-danger"></ConfirmDialog>
     <section>
@@ -50,12 +51,14 @@ import Column from "primevue/column";
 import ConfirmDialog from "primevue/confirmdialog";
 import addObject from "./addObject.vue";
 import axios from "axios";
+import filterMenu from "./filtermenu.vue"
 export default {
   components: {
     DataTable,
     Column,
     ConfirmDialog,
     addObject,
+    filterMenu
   },
   data() {
     return {
@@ -116,4 +119,7 @@ export default {
 </script>
 
 <style scoped>
+.responseDisplay{
+  margin-top:1vh;
+}
 </style>

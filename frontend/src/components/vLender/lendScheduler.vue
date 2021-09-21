@@ -116,7 +116,7 @@ export default {
         })
         .then((res) => {
           this.$toast.add({ severity: "success", summary: res.data.message });
-          this.$emit("objectAdded");
+          this.$store.dispatch("getEvents")
         })
         .catch((err) => {
           console.log(err);

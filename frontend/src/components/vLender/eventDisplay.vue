@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="eventCard" v-for="event in events" :key="event._id">
+    <div class="eventCard" v-for="event in updateEvents" :key="event._id">
       <header class="cardHeader">
         <h3>{{ event.loanName }} -</h3>
 
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import Timeline from "primevue/timeline";
 export default {
   components: { Timeline },
@@ -82,58 +82,33 @@ export default {
       events: null,
     };
   },
-  computed: {},
+  computed: {
+    updateEvents() {
+      return this.$store.getters.getEvents;
+    },
+  },
 
   methods: {
-    getEvents() {
-      axios
-        .get("http://localhost:3000/vloanapi/events/getevents", {
-          params: this.setEventFilters,
-        })
-        .then((res) => {
-          this.events = res.data.events;
-          for (let item of this.events) {
-            item["clicked"] = false;
-            item["objectsArray"] = [];
-            item.loanStartDate = new Date(item.loanStartDate).toLocaleString(
-              "de-DE",
-              { year: "numeric", month: "2-digit", day: "2-digit" }
-            );
-            item.loanEndDate = new Date(item.loanEndDate).toLocaleString(
-              "de-DE",
-              { year: "numeric", month: "2-digit", day: "2-digit" }
-            );
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          this.$toast.add({
-            severity: "error",
-            summary: "Error while fetching events",
-          });
-        });
-    },
     showDetails(callback) {
       let getIds = callback.objects.map((item) => item._id);
-
-      const params = {
+      const payload = {
+        eventId: callback._id,
         objectId: getIds,
       };
 
-      if (!callback.clicked) {
-        axios
-          .get("http://localhost:3000/vloanapi/objects/getobject", { params })
-          .then((res) => {
-            callback.objectsArray = res.data.objects;
-            callback.clicked = true;
-          });
-      } else {
+      if (callback.objectsArray.length <= 0) {
+        this.$store.dispatch("getEventObjects", payload);
+      }
+
+      if (callback.clicked) {
         callback.clicked = false;
+      } else {
+        callback.clicked = true;
       }
     },
   },
   mounted() {
-    this.getEvents();
+    this.updateEvents;
   },
 };
 </script>

@@ -156,6 +156,8 @@ exports.getEvents = ((req, res, next) => {
     //loanName
     let QueryParams = {}
 
+    console.log(req.query)
+
     if ("loanStartDate" in req.query && req.query.loanStartDate != "") {
         QueryParams["loanStartDate"] = { $gte: new Date(req.query.loanStartDate) }
     }
@@ -179,7 +181,7 @@ exports.getEvents = ((req, res, next) => {
     }
 
 
-    console.log(QueryParams)
+
 
 
 

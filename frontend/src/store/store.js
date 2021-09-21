@@ -10,9 +10,6 @@ const store = createStore({
     },
     mutations: {
         setEvents(state, payload) {
-
-
-
             for (let item of payload) {
                 item["clicked"] = false;
                 item["objectsArray"] = [];
@@ -25,6 +22,15 @@ const store = createStore({
             }
             state.events = payload
 
+        },
+        setEventObjects(state, payload) {
+            for (let item of state.events) {
+                if (item._id === payload.eventId) {
+                    item.objectsArray = payload.objects
+
+                }
+            }
+            console.log(payload)
         }
     },
     getters: {
@@ -34,6 +40,10 @@ const store = createStore({
     },
     actions: {
         getEvents(context, payload) {
+
+            if (!payload) {
+                payload = { loanStartDate: new Date().toISOString().substr(0, 10) }
+            }
             axios
                 .get("http://localhost:3000/vloanapi/events/getevents", { params: payload })
                 .then((res) => {
@@ -47,6 +57,17 @@ const store = createStore({
                         severity: "error",
                         summary: "Error while fetching events",
                     });
+                });
+        },
+        getEventObjects(context, payload) {
+
+            axios.get("http://localhost:3000/vloanapi/objects/getobject", { params: payload })
+                .then((res) => {
+                    let response = {
+                        eventId: payload.eventId,
+                        objects: res.data.objects
+                    }
+                    context.commit("setEventObjects", response)
                 });
         }
     }

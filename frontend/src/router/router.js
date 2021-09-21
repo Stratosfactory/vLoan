@@ -3,7 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import home from "../components/home/home"
 import vlender from "../components/vLender/vlender"
 import objectAdmin from "../components/objectAdmin/objectAdmin"
-import inventoryManager from "../components/inventoryManager/inventoryManager"
+import insights from "../components/insights/insights"
+import myTasks from "../components/loantasks/myTasks"
 
 
 const routes = [{
@@ -34,11 +35,21 @@ const routes = [{
 
     },
     {
-        path: "/inventory",
-        name: "Inventory Manager",
-        component: inventoryManager,
+        path: "/insights",
+        name: "Object Insights",
+        component: insights,
         meta: {
-            icon: "pi pi-book"
+            icon: "pi pi-eye"
+        },
+
+    },
+
+    {
+        path: "/mytasks",
+        name: "My Assigned Loan Tasks",
+        component: myTasks,
+        meta: {
+            icon: "pi pi-check-square"
         },
 
     },

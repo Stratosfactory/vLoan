@@ -241,4 +241,35 @@ select:focus {
 .p-button {
   background: var(--bg-s1) !important;
 }
+
+.filter-menu {
+  display: flex;
+  justify-content: left;
+  background: var(--bg-s2);
+  padding: 10px 10px;
+  
+  box-shadow: 2px 3px 6px 2px grey;
+  flex-wrap: wrap;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-right: 2%;
+  width: 31%;
+  
+}
+
+.filter-item label {
+  text-align: left;
+  
+}
+
+.filter-menu-button{
+    margin-top: auto;
+    margin-left:auto;
+    margin-right: 3%;
+    
+}
 </style>
