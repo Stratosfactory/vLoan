@@ -63,15 +63,43 @@ exports.createObject = ((req, res, next) => {
 
 exports.getObject = ((req, res, next) => {
 
-    let params
-    if (req.query.objectId) {
-        params = { "_id": { $in: req.query.objectId } }
-    } else {
-        params = {}
+    let queryParams = {}
+
+    console.log(req.query)
+
+
+    if ("productFamily" in req.query && req.query.productFamily != "") {
+        queryParams["productFamily"] = req.query.productFamily
+    }
+
+    if ("model" in req.query && req.query.model != "") {
+        queryParams["model"] = { $regex: req.query.model, $options: "i" }
+
+    }
+
+    if ("referenceNumber" in req.query && req.query.referenceNumber != "") {
+        queryParams["referenceNumber"] = { $regex: req.query.referenceNumber, $options: "i" }
+
+    }
+
+    if ("serialNumber" in req.query && req.query.serialNumber != "") {
+        queryParams["serialNumber"] = { $regex: req.query.serialNumber, $options: "i" }
+
     }
 
 
-    loanObject.find(params)
+    if ("material" in req.query && req.query.material != "") {
+        queryParams["material"] = req.query.material
+    }
+
+    if (req.query.objectId) {
+        queryParams = { "_id": { $in: req.query.objectId } }
+    }
+
+
+
+
+    loanObject.find(queryParams)
         .then((objects) => {
 
             res.status(200).json({

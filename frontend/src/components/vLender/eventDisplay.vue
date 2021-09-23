@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     updateEvents() {
-      return this.$store.getters.getEvents;
+      return this.$store.getters.eventGetter;
     },
   },
 

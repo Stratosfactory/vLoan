@@ -5,6 +5,7 @@ const store = createStore({
         return {
             eventFilters: null,
             events: null,
+            objects: null,
         }
 
     },
@@ -31,11 +32,23 @@ const store = createStore({
                 }
             }
             console.log(payload)
+        },
+        setObjects(state, payload) {
+
+
+            for (let object of payload) {
+                object.timeStamp = new Date(object.timeStamp).toLocaleString();
+            }
+            state.objects = payload
+
         }
     },
     getters: {
-        getEvents(state) {
+        eventGetter(state) {
             return state.events
+        },
+        objectGetter(state) {
+            return state.objects
         }
     },
     actions: {
@@ -68,6 +81,23 @@ const store = createStore({
                         objects: res.data.objects
                     }
                     context.commit("setEventObjects", response)
+                });
+        },
+        getObjects(context, payload) {
+            axios
+                .get("http://localhost:3000/vloanapi/objects/getobject", { params: payload })
+                .then((res) => {
+
+                    context.commit("setObjects", res.data.objects)
+
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                    this.$toast.add({
+                        severity: "error",
+                        summary: err.response.data.message,
+                    });
                 });
         }
     }
