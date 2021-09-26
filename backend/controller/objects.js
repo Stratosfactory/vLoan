@@ -97,7 +97,7 @@ exports.getObject = ((req, res, next) => {
     }
 
 
-
+    console.log(process.env.jwt_secret)
 
     loanObject.find(queryParams)
         .then((objects) => {
