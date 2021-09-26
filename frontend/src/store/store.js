@@ -6,6 +6,10 @@ const store = createStore({
             eventFilters: null,
             events: null,
             objects: null,
+            toast: {
+                type: null,
+                message: null,
+            }
         }
 
     },
@@ -41,6 +45,10 @@ const store = createStore({
             }
             state.objects = payload
 
+        },
+        toastServiceHandler(state, payload) {
+            state.toast.type = payload.type
+            state.toast.message = payload.message
         }
     },
     getters: {
@@ -49,6 +57,9 @@ const store = createStore({
         },
         objectGetter(state) {
             return state.objects
+        },
+        getToast(state) {
+            return state.toast
         }
     },
     actions: {
@@ -66,10 +77,10 @@ const store = createStore({
                 })
                 .catch((err) => {
                     console.log(err);
-                    this.$toast.add({
-                        severity: "error",
-                        summary: "Error while fetching events",
-                    });
+                    context.commit("toastServiceHandler", {
+                        type: "error",
+                        message: "Error while fetching events"
+                    })
                 });
         },
         getEventObjects(context, payload) {
@@ -81,6 +92,12 @@ const store = createStore({
                         objects: res.data.objects
                     }
                     context.commit("setEventObjects", response)
+                })
+                .catch((err) => {
+                    context.commit("toastServiceHandler", {
+                        type: "error",
+                        message: err.data.message
+                    })
                 });
         },
         getObjects(context, payload) {
@@ -94,10 +111,7 @@ const store = createStore({
                 })
                 .catch((err) => {
                     console.log(err);
-                    this.$toast.add({
-                        severity: "error",
-                        summary: err.response.data.message,
-                    });
+
                 });
         }
     }

@@ -5,6 +5,7 @@
       <topnav></topnav>
       <Toast />
       <router-view></router-view>
+     
     </main>
   </div>
 </template>
@@ -31,6 +32,22 @@ export default {
       this.navCollapsed = bool;
     },
   },
+  computed:{
+    toastService(){
+      return this.$store.getters.getToast
+    }
+  },
+  watch:{
+    toastService:{
+      deep:true,
+      handler(toastObj){
+        this.$toast.add({
+                        severity: toastObj.type,
+                        summary: toastObj.message,
+                    });
+      }
+    }
+  }
 };
 </script>
 
@@ -55,6 +72,7 @@ html {
   --bg-s1: rgb(56, 77, 109);
   --bg-s2: rgba(56, 77, 109, 0.2);
   --bg-s3: white;
+  
 
 
   --fc-s1: #ffffff;

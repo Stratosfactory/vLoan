@@ -7,14 +7,14 @@ const { validationResult } = require("express-validator")
 exports.createUser = ((req, res, next) => {
     const userName = req.body.userName
     const email = req.body.email
-    const company = req.body.company
+    const role = req.body.role
     const creationDate = new Date().toString()
     const password = req.body.password
     const validationErrors = validationResult(req)
 
     if (!validationErrors.isEmpty()) {
         console.log(validationErrors)
-        const error = new Error("Entered data is incorrect")
+        const error = new Error("Request contains invalid data")
         error.statusCode = 422
         throw error;
     }
@@ -34,14 +34,14 @@ exports.createUser = ((req, res, next) => {
                         const user = new User({
                             userName: userName,
                             email: email,
-                            company: company,
+                            role: role,
                             creationDate: creationDate,
                             password: hashedPW
                         })
                         user.save()
                             .then(() => {
                                 console.log("User created")
-                                res.status(201).json({ message: "Profile created - Confirmation sent via email" })
+                                res.status(201).json({ message: "User created" })
 
                             })
 

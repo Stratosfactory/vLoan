@@ -18,8 +18,13 @@
       >
 
       <div class="expand">
-        <p class="loginButton" v-if="!loggedIn" @click="callLogin()">
-          <i class="pi pi-sign-in"></i>Login
+        <!-- <p class="loginButton" v-if="!loggedIn" @click="callLogin()">
+          
+        </p> -->
+        <p>
+          <button class="loginButton">
+            <i class="pi pi-sign-in"></i> Login
+          </button>
         </p>
         <p class="logoutButton" v-if="loggedIn" @click="logOut">
           <i class="pi pi-sign-out"></i>Logout
@@ -210,13 +215,13 @@ img {
 }
 
 .loginButton {
-  color: hsl(100, 80%, 60%);
-  border: white 1px solid;
+  color: hsl(128, 80%, 60%);
+  box-shadow: 1px 0px 3px 1px #ffffff;
   padding: 5px 30px 5px 30px;
   border-radius: 4px;
-  background: rgb(50, 61, 77);
+  background: var(--bg-s1);
   margin-bottom: 50px;
-  font-family: monospace;
+  font-family: "Chakra Petch", sans-serif;
   font-size: 20px;
 }
 
@@ -227,8 +232,8 @@ img {
 
 .loginButton:hover {
   background: rgb(31, 61, 107);
-  transform: scale(1.05);
-  border-color: hsl(100, 80%, 60%);
+  transform: scale(1.01);
+  box-shadow: 1px 0px 3px 1px var(--ac-good);
   cursor: pointer;
 }
 .logoutButton {
