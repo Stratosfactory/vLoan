@@ -9,6 +9,12 @@ const store = createStore({
             toast: {
                 type: null,
                 message: null,
+            },
+            login: {
+                visible: false,
+                loggedIn: false,
+                token: null,
+                role: null,
             }
         }
 
@@ -47,9 +53,37 @@ const store = createStore({
 
         },
         toastServiceHandler(state, payload) {
+            console.log(payload)
             state.toast.type = payload.type
             state.toast.message = payload.message
+        },
+        toggleLogin(state) {
+
+            state.login.visible ? state.login.visible = false : state.login.visible = true
+
+        },
+        setToken(state, payload) {
+            localStorage.setItem("token", payload.token);
+            const validTime = 60 * 120 * 1000;
+            const expiryDate = new Date(new Date().getTime() + validTime);
+            localStorage.setItem("expiryDate", expiryDate.toISOString());
+            state.login.visible = false;
+            state.login.role = payload.role;
+        },
+        validateLogin(state) {
+            const token = localStorage.getItem("token");
+            const expiryDate = localStorage.getItem("expiryDate");
+            if (!token || !expiryDate) {
+                state.login.loggedIn = false
+            } else if (new Date(expiryDate) < new Date()) {
+                state.login.loggedIn = false;
+                localStorage.removeItem("token");
+                localStorage.removeItem("expiryDate");
+            } else {
+                state.login.loggedIn = true
+            }
         }
+
     },
     getters: {
         eventGetter(state) {
@@ -60,6 +94,12 @@ const store = createStore({
         },
         getToast(state) {
             return state.toast
+        },
+        getLoginVisibility(state) {
+            return state.login.visible
+        },
+        getLoginData(state) {
+            return state.login
         }
     },
     actions: {
@@ -96,7 +136,7 @@ const store = createStore({
                 .catch((err) => {
                     context.commit("toastServiceHandler", {
                         type: "error",
-                        message: err.data.message
+                        message: err.response.data.message
                     })
                 });
         },
@@ -110,9 +150,30 @@ const store = createStore({
 
                 })
                 .catch((err) => {
-                    console.log(err);
+
+                    context.commit("toastServiceHandler", {
+                        type: "error",
+                        message: err.response.data.message
+                    })
 
                 });
+        },
+        login(context, payload) {
+            axios.post("http://localhost:3000/vloanapi/user/login", { email: payload.email, password: payload.password })
+                .then((res) => {
+                    context.commit("setToken", {
+                            token: res.data.token,
+                            role: res.data.role
+                        }),
+                        context.commit("validateLogin")
+                })
+                .catch((err) => {
+
+                    context.commit("toastServiceHandler", {
+                        type: "error",
+                        message: err.response.data.message
+                    })
+                })
         }
     }
 })

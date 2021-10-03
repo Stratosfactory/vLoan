@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
 
         if (!decodedJWT) {
             const error = new Error("User could not be authenticated")
-            error.statusCode = 500
+            error.statusCode = 401
             throw error
         }
 
@@ -26,7 +26,7 @@ module.exports = (req, res, next) => {
         next();
     } else {
         const error = new Error("User could not be authenticated")
-        error.statusCode = 500
+        error.statusCode = 401
         throw error
     }
 }

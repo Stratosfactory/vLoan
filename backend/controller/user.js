@@ -40,7 +40,7 @@ exports.createUser = ((req, res, next) => {
                         })
                         user.save()
                             .then(() => {
-                                console.log("User created")
+
                                 res.status(201).json({ message: "User created" })
 
                             })
@@ -74,6 +74,7 @@ exports.createUser = ((req, res, next) => {
 exports.loginUser = ((req, res, next) => {
     const email = req.body.email
     const password = req.body.password
+    console.log(req.body)
     let foundUser
     User.findOne({ email: email })
         .then((userInfo) => {
@@ -95,9 +96,10 @@ exports.loginUser = ((req, res, next) => {
                 const token = jwt.sign({
                     email: foundUser.email,
                     userId: foundUser._id.toString()
-                }, "qTrackSecretKey2021", { expiresIn: "1h" })
-                res.status(200).json({
+                }, process.env.jwt_secret, { expiresIn: "1h" })
+                res.status(202).json({
                     token: token,
+                    role: foundUser.role,
                     message: "success"
                 })
             }

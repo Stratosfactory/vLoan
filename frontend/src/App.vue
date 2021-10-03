@@ -4,8 +4,9 @@
     <main :class="[navCollapsed ? 'collapsed' : 'extended']">
       <topnav></topnav>
       <Toast />
+      
       <router-view></router-view>
-     
+     <login></login>
     </main>
   </div>
 </template>
@@ -14,6 +15,7 @@
 import topnav from "./components/navigation/topnav.vue";
 import sidenav from "./components/navigation/sidenav.vue";
 import Toast from "primevue/toast";
+import login from "./components/login/login.vue"
 
 export default {
   name: "App",
@@ -21,6 +23,7 @@ export default {
     topnav,
     sidenav,
     Toast,
+    login
   },
   data() {
     return {
@@ -47,6 +50,9 @@ export default {
                     });
       }
     }
+  },
+  mounted(){
+    this.$store.commit("validateLogin")
   }
 };
 </script>
@@ -289,5 +295,9 @@ select:focus {
     margin-left:auto;
     margin-right: 3%;
     
+}
+
+label{
+  font-family: "Roboto Slab", serif;
 }
 </style>

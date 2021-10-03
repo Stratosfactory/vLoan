@@ -13,20 +13,17 @@
       <router-link to="/insights">
         <i class="pi pi-eye"></i>Object Insights</router-link
       >
-      <router-link to="/insights">
+      <router-link to="/mytasks">
         <i class="pi pi-check-square"></i>My Loan Tasks</router-link
       >
 
       <div class="expand">
-        <!-- <p class="loginButton" v-if="!loggedIn" @click="callLogin()">
-          
-        </p> -->
         <p>
-          <button class="loginButton">
+          <button class="loginButton" v-if="!loggedIn.loggedIn" @click="callLogin()">
             <i class="pi pi-sign-in"></i> Login
           </button>
         </p>
-        <p class="logoutButton" v-if="loggedIn" @click="logOut">
+        <p class="logoutButton" v-if="loggedIn.loggedIn" @click="logOut">
           <i class="pi pi-sign-out"></i>Logout
         </p>
         <i class="pi pi-angle-double-left" @click="collapse(true)"></i>
@@ -38,15 +35,15 @@
       <router-link to="/objects"> <i class="pi pi-list"></i></router-link>
       <router-link to="/loan"> <i class="pi pi-reply"></i></router-link>
       <router-link to="/insights"> <i class="pi pi-eye"></i></router-link>
-      <router-link to="/myTasks">
+      <router-link to="/mytasks">
         <i class="pi pi-check-square"></i
       ></router-link>
 
       <div class="expand">
-        <p v-if="!loggedIn">
+        <p v-if="!loggedIn.loggedIn" @click="callLogin()">
           <i class="pi pi-sign-in" style="color: hsl(100, 80%, 60%)"></i>
         </p>
-        <p v-if="loggedIn" @click="logOut">
+        <p v-if="loggedIn.loggedIn" @click="logOut">
           <i class="pi pi-sign-out" style="color: hsl(10, 80%, 60%)"></i>
         </p>
         <i class="pi pi-angle-double-right" @click="collapse(false)"></i>
@@ -64,7 +61,7 @@ export default {
   },
   computed: {
     loggedIn() {
-      return this.$store.state.loginStatus;
+      return this.$store.getters.getLoginData
     },
   },
   methods: {
@@ -83,11 +80,7 @@ export default {
       this.$router.push("/");
     },
     callLogin() {
-      this.$router.push("/");
-      this.$store.commit({
-        type: "callLoginForm",
-        status: true,
-      });
+      this.$store.commit("toggleLogin");
     },
   },
 };
@@ -237,13 +230,14 @@ img {
   cursor: pointer;
 }
 .logoutButton {
-  background: rgb(50, 61, 77);
-  border: white 1px solid;
+  box-shadow: 1px 0px 3px 1px #ffffff;
   padding: 5px 30px 5px 30px;
   border-radius: 4px;
-  font-family: monospace;
+  background: var(--bg-s1);
+  margin-bottom: 50px;
+  font-family: "Chakra Petch", sans-serif;
   font-size: 20px;
-  color: hsl(10, 80%, 60%);
+  color: hsl(22, 94%, 49%);
 }
 .logoutButton i {
   color: white;
@@ -253,8 +247,8 @@ img {
 
 .logoutButton:hover {
   background: rgb(31, 61, 107);
-  transform: scale(1.05);
-  border-color: hsl(10, 80%, 60%);
+  transform: scale(1.01);
+  box-shadow: 1px 0px 3px 1px rgb(231, 6, 81);
   cursor: pointer;
 }
 </style>
