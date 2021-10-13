@@ -96,7 +96,7 @@ exports.loginUser = ((req, res, next) => {
                 const token = jwt.sign({
                     email: foundUser.email,
                     userId: foundUser._id.toString()
-                }, process.env.jwt_secret, { expiresIn: "1h" })
+                }, process.env.jwt_secret, { expiresIn: "2h" })
                 res.status(202).json({
                     token: token,
                     role: foundUser.role,
@@ -105,4 +105,20 @@ exports.loginUser = ((req, res, next) => {
             }
         })
 
+})
+
+exports.getUserInfo = ((req, res, next) => {
+
+    const email = req.email;
+    const userId = req.userId;
+
+    User.findById(userId)
+        .then((userInfo) => {
+            res.status(200).json({
+                email: userInfo.email,
+                role: userInfo.role,
+                userName: userInfo.userName
+            })
+        })
+        .catch((err) => console.log(err));
 })

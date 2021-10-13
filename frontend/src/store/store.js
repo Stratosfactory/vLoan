@@ -13,7 +13,8 @@ const store = createStore({
             login: {
                 visible: false,
                 loggedIn: false,
-                token: null,
+                userName: null,
+                email: null,
                 role: null,
             }
         }
@@ -82,6 +83,18 @@ const store = createStore({
             } else {
                 state.login.loggedIn = true
             }
+        },
+        logOut(state) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("expiryDate");
+            state.login.loggedIn = false;
+
+        },
+        setUserInfo(state, payload) {
+            state.login.userName = payload.userName;
+            state.login.email = payload.email;
+            state.login.role = payload.role;
+
         }
 
     },
@@ -125,7 +138,12 @@ const store = createStore({
         },
         getEventObjects(context, payload) {
 
-            axios.get("http://localhost:3000/vloanapi/objects/getobject", { params: payload })
+            axios.get("http://localhost:3000/vloanapi/objects/getobject", {
+                    params: payload,
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("token")
+                    }
+                })
                 .then((res) => {
                     let response = {
                         eventId: payload.eventId,
@@ -140,9 +158,26 @@ const store = createStore({
                     })
                 });
         },
+        createEvent(context, payload) {
+            axios
+                .post("http://localhost:3000/vloanapi/events/createevent", payload, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
+                .then((res) => {
+                    context.commit("toastServiceHandler", {
+                        type: "success",
+                        message: res.data.message
+                    })
+                    this.$store.dispatch("getEvents")
+                })
+                .catch((err) => {
+                    context.commit("toastServiceHandler", {
+                        type: "error",
+                        message: err.response.data.message
+                    })
+                });
+        },
         getObjects(context, payload) {
             axios
-                .get("http://localhost:3000/vloanapi/objects/getobject", { params: payload })
+                .get("http://localhost:3000/vloanapi/objects/getobject", { params: payload, headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
                 .then((res) => {
 
                     context.commit("setObjects", res.data.objects)
@@ -156,6 +191,24 @@ const store = createStore({
                         message: err.response.data.message
                     })
 
+                });
+        },
+        createObject(context, payload) {
+            axios
+                .put("http://localhost:3000/vloanapi/objects/addobject", payload, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
+                .then((res) => {
+                    context.commit("toastServiceHandler", {
+                        type: "success",
+                        message: res.data.message
+                    })
+                    context.dispatch("getObjects")
+
+                })
+                .catch((err) => {
+                    context.commit("toastServiceHandler", {
+                        type: "error",
+                        message: err.response.data.message
+                    })
                 });
         },
         login(context, payload) {
@@ -174,7 +227,22 @@ const store = createStore({
                         message: err.response.data.message
                     })
                 })
+        },
+        getUserInfo(context) {
+            axios.get("http://localhost:3000/vloanapi/user/userinfo", {
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("token")
+                    }
+                })
+                .then((res) => {
+                    context.commit("setUserInfo", res.data)
+                })
+                .catch((err) => context.commit("toastServiceHandler", {
+                    type: "error",
+                    message: err.response.data.message
+                }))
         }
+
     }
 })
 

@@ -16,6 +16,9 @@
       <router-link to="/mytasks">
         <i class="pi pi-check-square"></i>My Loan Tasks</router-link
       >
+      <router-link to="/profile">
+        <i class="pi pi-user"></i>My Profile</router-link
+      >
 
       <div class="expand">
         <p>
@@ -23,7 +26,7 @@
             <i class="pi pi-sign-in"></i> Login
           </button>
         </p>
-        <p class="logoutButton" v-if="loggedIn.loggedIn" @click="logOut">
+        <p class="logoutButton" v-if="loggedIn.loggedIn" @click="logOut()">
           <i class="pi pi-sign-out"></i>Logout
         </p>
         <i class="pi pi-angle-double-left" @click="collapse(true)"></i>
@@ -38,12 +41,12 @@
       <router-link to="/mytasks">
         <i class="pi pi-check-square"></i
       ></router-link>
-
+    <router-link to="/profile"> <i class="pi pi-user"></i></router-link>
       <div class="expand">
         <p v-if="!loggedIn.loggedIn" @click="callLogin()">
           <i class="pi pi-sign-in" style="color: hsl(100, 80%, 60%)"></i>
         </p>
-        <p v-if="loggedIn.loggedIn" @click="logOut">
+        <p v-if="loggedIn.loggedIn" @click="logOut()">
           <i class="pi pi-sign-out" style="color: hsl(10, 80%, 60%)"></i>
         </p>
         <i class="pi pi-angle-double-right" @click="collapse(false)"></i>
@@ -70,17 +73,13 @@ export default {
       this.$emit("nav-collapse", this.slimNavigation);
     },
     logOut() {
-      this.$store.commit({
-        type: "updateLoginStatus",
-        loginStatus: false,
-        token: null,
-      });
-      localStorage.removeItem("token");
-      localStorage.removeItem("expiryDate");
-      this.$router.push("/");
+      this.$router.push('/')
+      this.$store.commit("logOut")
+      
     },
     callLogin() {
       this.$store.commit("toggleLogin");
+      
     },
   },
 };
@@ -101,7 +100,7 @@ export default {
   position: fixed;
   flex-wrap: wrap;
   border-right: 1px solid grey;
-  animation: slide-right 0.5s ease-out;
+  animation: slide-right 0.4s ease-out;
   width: 220px;
 }
 
@@ -184,7 +183,7 @@ i {
 
 @keyframes slide-right {
   from {
-    width: 100px;
+    width: 70px;
   }
   to {
     width: 220px;
@@ -230,7 +229,7 @@ img {
   cursor: pointer;
 }
 .logoutButton {
-  box-shadow: 1px 0px 3px 1px #ffffff;
+  box-shadow: 0px 0px 3px 1px #ffffff;
   padding: 5px 30px 5px 30px;
   border-radius: 4px;
   background: var(--bg-s1);
@@ -248,7 +247,7 @@ img {
 .logoutButton:hover {
   background: rgb(31, 61, 107);
   transform: scale(1.01);
-  box-shadow: 1px 0px 3px 1px rgb(231, 6, 81);
+  box-shadow: 0px 0px 3px 1px rgb(231, 6, 81);
   cursor: pointer;
 }
 </style>

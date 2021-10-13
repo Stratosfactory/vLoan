@@ -1,5 +1,5 @@
 <template>
-  <div>{{test}}</div>
+ <header>My Insights</header>
 </template>
 
 <script>

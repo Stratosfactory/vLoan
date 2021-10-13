@@ -5,7 +5,7 @@ import vlender from "../components/vLender/vlender"
 import objectAdmin from "../components/objectAdmin/objectAdmin"
 import insights from "../components/insights/insights"
 import myTasks from "../components/loantasks/myTasks"
-
+import profile from "../components/profile/profileInfo.vue"
 
 const routes = [{
         path: "/",
@@ -50,6 +50,15 @@ const routes = [{
         component: myTasks,
         meta: {
             icon: "pi pi-check-square"
+        },
+
+    },
+    {
+        path: "/profile",
+        name: "Profile Info",
+        component: profile,
+        meta: {
+            icon: "pi pi-user"
         },
 
     },

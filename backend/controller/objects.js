@@ -1,10 +1,11 @@
-const loanObject = require("../models/objectSchema")
-const jwt = require("jsonwebtoken")
-const { validationResult } = require("express-validator")
+const loanObject = require("../models/objectSchema");
+const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
+
 
 exports.createObject = ((req, res, next) => {
 
-    const email = req.body.email
+    const email = req.email
     const productFamily = req.body.productFamily
     const model = req.body.model
     const referenceNumber = req.body.referenceNumber

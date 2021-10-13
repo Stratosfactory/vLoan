@@ -47,13 +47,12 @@
       <div class="menuitem menubutton">
         <button class="button-secondary" @click="submitObject()">Submit</button>
       </div>
-     
     </div>
   </section>
 </template>
 
 <script>
-import axios from "axios";
+
 export default {
   data() {
     return {
@@ -92,24 +91,15 @@ export default {
       }
     },
     submitObject() {
-      axios
-        .put("http://localhost:3000/vloanapi/objects/addobject", {
-          email: "test@test.com",
-          productFamily: this.inputValues["Product Family"],
-          model: this.inputValues["Model"],
-          referenceNumber: this.inputValues["Reference Number"],
-          releaseDate: this.inputValues["Release Date"],
-          serialNumber: this.inputValues["Serial Number"],
-          material: this.inputValues["Material"],
-        })
-        .then((res)=>{
-          this.$toast.add({ severity: "success", summary: res.data.message });
-          this.$emit("objectAdded")
-        })
-        .catch((err) => {
-          console.log(err);
-          this.$toast.add({ severity: "error", summary: err.response.data.message });
-        });
+      const payload = {
+        productFamily: this.inputValues["Product Family"],
+        model: this.inputValues["Model"],
+        referenceNumber: this.inputValues["Reference Number"],
+        releaseDate: this.inputValues["Release Date"],
+        serialNumber: this.inputValues["Serial Number"],
+        material: this.inputValues["Material"],
+      };
+      this.$store.dispatch("createObject", payload);
     },
   },
   computed: {
@@ -128,7 +118,5 @@ export default {
 </script>
 
 <style scoped>
-
-
 </style>
 

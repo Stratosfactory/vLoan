@@ -52,7 +52,11 @@ export default {
     }
   },
   mounted(){
-    this.$store.commit("validateLogin")
+    this.$store.commit("validateLogin");
+    
+    if(this.$store.getters.getLoginData.loggedIn){
+      this.$store.dispatch("getUserInfo")
+    }
   }
 };
 </script>

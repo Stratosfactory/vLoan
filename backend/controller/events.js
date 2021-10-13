@@ -14,7 +14,7 @@ exports.createEvent = ((req, res, next) => {
     const contactEmail = req.body.contactEmail
     const loanStartDate = new Date(req.body.loanStart)
     const loanEndDate = new Date(req.body.loanEnd)
-    const workflowState = { status: "Submitted", owner: "test@test.de" }
+    const workflowState = { status: "Submitted", owner: req.email }
 
 
 

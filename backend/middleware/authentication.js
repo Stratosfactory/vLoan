@@ -1,32 +1,30 @@
 const jwt = require("jsonwebtoken")
 
 module.exports = (req, res, next) => {
-    const header = req.get("Authorization")
+    const token = req.get("Authorization").split(" ")[1]; // Abfrage des Authorization-Headers aus den Request-Headers
+    let decodedToken;
 
-    if (header) {
-        let decodedJWT
-            //const token = req.get("Authorization").split(' ')[1]
-        const token = header
-        try {
 
-            decodedJWT = jwt.verify(token, "qTrackSecretKey2021")
-        } catch (err) {
-            console.log(decodedJWT)
-            err.statusCode = 500
-            throw err
-        }
+    try {
+        decodedToken = jwt.verify(token, process.env.jwt_secret);
+    } catch (err) {
 
-        if (!decodedJWT) {
-            const error = new Error("User could not be authenticated")
-            error.statusCode = 401
-            throw error
-        }
-
-        req.email = decodedJWT.email;
-        next();
-    } else {
-        const error = new Error("User could not be authenticated")
+        const error = new Error(err)
         error.statusCode = 401
         throw error
     }
+
+    if (!decodedToken) {
+        const error = new Error("Not Authorized")
+        error.statusCode = 401
+        throw error
+    }
+
+    req.userId = decodedToken.userId;
+    req.email = decodedToken.email;
+
+
+    next();
+
+
 }

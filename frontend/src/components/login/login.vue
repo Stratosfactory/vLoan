@@ -12,12 +12,14 @@
           <i class="pi pi-times"></i>
         </button>
       </template>
-      <div class="dialog-body">
+      <form class="dialog-body" name="formlogin" id="formlogin">
+       
         <label>E-Mail</label>
-        <input v-model="loginData.email" autocomplete="email"/>
+        <input v-model="loginData.email" autocomplete="email username" name="email" type="text" />
         <label>Password</label>
-        <input type="password" v-model="loginData.password" autocomplete="password" />
-      </div>
+        <input type="password" v-model="loginData.password" autocomplete="password" name="new-password" />
+        
+      </form>
       <template #footer>
         <button class="button-main" @click="login()">Login</button>
       </template>

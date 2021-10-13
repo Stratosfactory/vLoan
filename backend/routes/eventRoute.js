@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const eventController = require("../controller/events")
-const isAuthenticated = require("../middleware/authentication")
+const isAuthorized = require("../middleware/authentication")
 const { body } = require("express-validator")
 
 router.post("/events/createevent", [
@@ -12,7 +12,7 @@ router.post("/events/createevent", [
     body("contactEmail").isEmail(),
     body("loanStart").trim().isDate(),
     body("loanEnd").trim().isDate()
-], eventController.createEvent)
+], isAuthorized, eventController.createEvent)
 
 router.get("/events/getevents", eventController.getEvents)
 

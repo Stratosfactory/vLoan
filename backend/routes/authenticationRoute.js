@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const userController = require("../controller/user")
 const { body } = require("express-validator")
+const isAuthorized = require("../middleware/authentication")
 
 router.post("/user/register", [
     body("email").isEmail(),
@@ -11,6 +12,7 @@ router.post("/user/register", [
 ], userController.createUser)
 
 router.post("/user/login", userController.loginUser)
+router.get("/user/userinfo", isAuthorized, userController.getUserInfo)
 
 
 

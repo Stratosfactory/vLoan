@@ -55,6 +55,7 @@
       <div class="menuitem menubutton">
         <button class="button-secondary" @click="submitObject()">Submit</button>
       </div>
+    
     </div>
   </section>
 </template>
@@ -62,14 +63,14 @@
 <script>
 import PickList from "primevue/picklist";
 
-import axios from "axios";
+
 export default {
   components: {
     PickList,
   },
   data() {
     return {
-      pickerData: [[], []],
+      pickerData: ["", []],
       menuClicked: false,
       inputValues: {
         loanPurpose: null,
@@ -81,20 +82,12 @@ export default {
       },
     };
   },
+ 
+  
   methods: {
     getObjects() {
-      axios
-        .get("http://localhost:3000/vloanapi/objects/getobject")
-        .then((res) => {
-          this.pickerData[0] = res.data.objects;
-        })
-        .catch((err) => {
-          console.log(err);
-          this.$toast.add({
-            severity: "error",
-            summary: err.response.data.message,
-          });
-        });
+      this.$store.dispatch("getObjects");
+      this.pickerData[0] = this.$store.getters.objectGetter
     },
     displayMenu() {
       if (this.menuClicked) {
@@ -104,8 +97,7 @@ export default {
       }
     },
     submitObject() {
-      axios
-        .post("http://localhost:3000/vloanapi/events/createevent", {
+      const payload = {
           loanPurpose: this.inputValues.loanPurpose,
           loanName: this.inputValues.loanName,
           contactPerson: this.inputValues.contactPerson,
@@ -113,18 +105,9 @@ export default {
           loanStart: this.inputValues.loanStart,
           loanEnd: this.inputValues.loanEnd,
           objects: this.pickerData[1],
-        })
-        .then((res) => {
-          this.$toast.add({ severity: "success", summary: res.data.message });
-          this.$store.dispatch("getEvents")
-        })
-        .catch((err) => {
-          console.log(err);
-          this.$toast.add({
-            severity: "error",
-            summary: err.response.data.message,
-          });
-        });
+        }
+
+      this.$store.dispatch("createEvent",payload)
     },
   },
   mounted() {

@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <header>My Open Tasks</header>
+  </div>
 </template>
 
 <script>
