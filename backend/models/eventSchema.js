@@ -9,6 +9,7 @@ const eventSchema = new schema({
     contactEmail: { type: String, required: true },
     loanStartDate: { type: Date, required: true },
     loanEndDate: { type: Date, required: true },
+    activeWorkflow: { type: String, required: true },
     workflowState: { type: Array, required: true },
 
 

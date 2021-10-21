@@ -85,10 +85,18 @@ export default {
  
   
   methods: {
-    getObjects() {
-      this.$store.dispatch("getObjects");
-      this.pickerData[0] = this.$store.getters.objectGetter
+    async getObjects() {
+      await this.$store.dispatch("getObjects")
+            
     },
+    setObject(){
+      this.getObjects()
+      .then((res) => {
+        console.log(res)
+        this.pickerData[0] = this.$store.getters.objectGetter})
+      
+    }
+    ,
     displayMenu() {
       if (this.menuClicked) {
         this.menuClicked = false;
@@ -111,8 +119,9 @@ export default {
     },
   },
   mounted() {
-    this.getObjects();
+    this.setObject();
   },
+  
 };
 </script>
 

@@ -16,7 +16,8 @@ const store = createStore({
                 userName: null,
                 email: null,
                 role: null,
-            }
+            },
+            eventTasks: null,
         }
 
     },
@@ -95,6 +96,9 @@ const store = createStore({
             state.login.email = payload.email;
             state.login.role = payload.role;
 
+        },
+        setEventTasks(state, payload) {
+            state.eventTasks = payload;
         }
 
     },
@@ -122,7 +126,7 @@ const store = createStore({
                 payload = { loanStartDate: new Date().toISOString().substr(0, 10) }
             }
             axios
-                .get("http://localhost:3000/vloanapi/events/getevents", { params: payload })
+                .get("http://localhost:3000/vloanapi/events/getevents", { params: payload, headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
                 .then((res) => {
                     context.commit("setEvents", res.data.events)
 
@@ -132,7 +136,7 @@ const store = createStore({
                     console.log(err);
                     context.commit("toastServiceHandler", {
                         type: "error",
-                        message: "Error while fetching events"
+                        message: err.response.data.message
                     })
                 });
         },
@@ -176,7 +180,7 @@ const store = createStore({
                 });
         },
         getObjects(context, payload) {
-            axios
+            return axios
                 .get("http://localhost:3000/vloanapi/objects/getobject", { params: payload, headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
                 .then((res) => {
 
@@ -241,6 +245,18 @@ const store = createStore({
                     type: "error",
                     message: err.response.data.message
                 }))
+        },
+        getEventTasks(context) {
+            axios.get("http://localhost:3000/vloanapi/events/eventtasks", { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
+                .then((res) => {
+                    context.commit("setEventTasks", res.data.eventTasks)
+                })
+                .catch((err) => {
+                    context.commit("toastServiceHandler", {
+                        type: "error",
+                        message: err.response.data.message
+                    })
+                })
         }
 
     }

@@ -114,20 +114,7 @@ export default {
 </script>
 
 <style scoped>
-.eventCard {
-  background: white;
-  padding: 10px 10px;
-  margin: 10px 0 10px 0;
-  border: 1px solid var(--bg-s1);
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
 
-.eventCard div {
-  margin: 5px 5px;
-}
 
 .timeline {
   padding: 5px 10px;

@@ -14,7 +14,7 @@ import filterMenu from "./filterMenu.vue"
 export default {
  components:{
    lendScheduler,eventDisplay,filterMenu
- }
+ },
 }
 </script>
 

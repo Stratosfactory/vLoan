@@ -14,6 +14,7 @@ exports.createEvent = ((req, res, next) => {
     const contactEmail = req.body.contactEmail
     const loanStartDate = new Date(req.body.loanStart)
     const loanEndDate = new Date(req.body.loanEnd)
+    const activeWorkflow = "Submitted"
     const workflowState = { status: "Submitted", owner: req.email }
 
 
@@ -24,6 +25,7 @@ exports.createEvent = ((req, res, next) => {
         loanStartDate: loanStartDate,
         loanEndDate: loanEndDate,
         workflowState: workflowState,
+        activeWorkflow: activeWorkflow,
         eventID: null,
     }
 
@@ -101,6 +103,7 @@ exports.createEvent = ((req, res, next) => {
                     contactEmail: contactEmail,
                     loanStartDate: loanStartDate,
                     loanEndDate: loanEndDate,
+                    activeWorkflow: activeWorkflow,
                     workflowState: workflowState
                 })
                 newEvent.save()
@@ -113,7 +116,7 @@ exports.createEvent = ((req, res, next) => {
                                         foundObject.loanHistory.push(historyObject)
                                         foundObject.save()
                                             .catch(() => {
-                                                const error = new Error("Failed to add insert data into loan object")
+                                                const error = new Error("Failed to insert data into loan object")
                                                 error.statusCode(400)
                                                 throw error
                                             })
@@ -149,11 +152,6 @@ exports.createEvent = ((req, res, next) => {
 exports.getEvents = ((req, res, next) => {
 
 
-    //loanStartDate
-    //loanEndDate
-    //loanPurpose
-    //workflowState  //entspricht loanStatus der Query
-    //loanName
     let QueryParams = {}
 
     console.log(req.query)
@@ -198,4 +196,22 @@ exports.getEvents = ((req, res, next) => {
             next(error)
             console.log(err)
         })
+})
+
+exports.getEventTasks = ((req, res, next) => {
+    const role = req.role
+    let query = {}
+
+    if (role === "approver") {
+        query["activeWorkflow"] = "Reviewed"
+    } else if (role === "reviewer") {
+        query["activeWorkflow"] = "Submitted"
+    } else if (role === "admin") {
+        query["activeWorkflow"] = { $ne: null }
+    }
+    console.log(query)
+
+    Event.find(query)
+        .then((res) => console.log(res))
+
 })
