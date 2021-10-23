@@ -15,7 +15,7 @@ router.post("/events/createevent", [
     body("loanEnd").trim().isDate()
 ], isAuthorized, eventController.createEvent)
 
-router.get("/events/getevents", isAuthorized, permitted("admin", "approver"), eventController.getEvents)
+router.get("/events/getevents", isAuthorized, permitted("admin", "reviewer", "approver"), eventController.getEvents)
 router.get("/events/eventtasks", isAuthorized, permitted("admin", "reviewer", "approver"), eventController.getEventTasks)
 
 module.exports = router

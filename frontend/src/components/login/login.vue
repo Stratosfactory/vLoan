@@ -12,7 +12,7 @@
           <i class="pi pi-times"></i>
         </button>
       </template>
-      <form class="dialog-body" name="formlogin" id="formlogin">
+      <form class="dialog-body" name="formlogin" id="formlogin" @keyup.enter="login()">
        
         <label>E-Mail</label>
         <input v-model="loginData.email" autocomplete="email username" name="email" type="text" />

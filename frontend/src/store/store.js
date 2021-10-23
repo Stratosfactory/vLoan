@@ -98,6 +98,15 @@ const store = createStore({
 
         },
         setEventTasks(state, payload) {
+            for (let item of payload) {
+
+                item.loanStartDate = new Date(item.loanStartDate).toLocaleString(
+                    "de-DE", { year: "numeric", month: "2-digit", day: "2-digit" }
+                );
+                item.loanEndDate = new Date(item.loanEndDate).toLocaleString(
+                    "de-DE", { year: "numeric", month: "2-digit", day: "2-digit" }
+                );
+            }
             state.eventTasks = payload;
         }
 
@@ -117,6 +126,9 @@ const store = createStore({
         },
         getLoginData(state) {
             return state.login
+        },
+        getEventTasks(state) {
+            return state.eventTasks
         }
     },
     actions: {

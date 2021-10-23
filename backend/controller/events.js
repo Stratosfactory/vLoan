@@ -209,9 +209,20 @@ exports.getEventTasks = ((req, res, next) => {
     } else if (role === "admin") {
         query["activeWorkflow"] = { $ne: null }
     }
-    console.log(query)
+
 
     Event.find(query)
-        .then((res) => console.log(res))
+        .then((eventTasks) => {
+            res.status(200).json({
+                message: "success",
+                eventTasks: eventTasks
+            })
+        })
+        .catch((err) => {
+            console.log(err)
+            const error = new Error("Failed to fetch Event Tasks")
+            error.statusCode = 500;
+            next(error);
+        })
 
 })
