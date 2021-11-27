@@ -32,6 +32,7 @@ const routes = [{
         meta: {
             icon: "pi pi-reply"
         },
+        props: { payload: null },
 
     },
     {

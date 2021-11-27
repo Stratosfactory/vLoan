@@ -3,24 +3,21 @@
     <div class="eventCard" v-for="event in updateEvents" :key="event._id">
       <header class="cardHeader">
         <h3>{{ event.loanName }} -</h3>
-
+       
         <h4>From: {{ event.loanStartDate }}</h4>
         <h4>To: {{ event.loanEndDate }} -</h4>
-        <h4
-          :class="[
-            event.workflowState[event.workflowState.length - 1].status ===
-            'Rejected'
-              ? 'statusDisplayBad'
-              : 'statusDisplayGood',
-            'statusDisplay',
-          ]"
-        >
+        <h4 :class="event.activeWorkflow" class="statusDisplay">
           Status:
           {{ event.workflowState[event.workflowState.length - 1].status }}
         </h4>
+        <div class="details-button">
+        <button class="button-main" style="background: crimson" v-if="event.activeWorkflow==='Rejected'">
+          Delete
+        </button>
         <button class="button-main details-button" @click="showDetails(event)">
           Show Details
         </button>
+        </div>
       </header>
       <div v-if="event.clicked">
         <div class="eventCardInfo">
@@ -60,13 +57,23 @@
         </div>
         <div class="timeline">
           <h3>Approval Status</h3>
-          <Timeline :value="event.workflowState" layout="horizontal">
+          <Timeline
+            :value="event.workflowState"
+            layout="horizontal"
+            class="timelineScale"
+          >
             <template #content="slotProps">
-              <p><i class="pi pi-flag"></i>{{ slotProps.item.status }}</p>
-              <p><i class="pi pi-user"></i>{{ slotProps.item.owner }}</p>
+              <div class="timelineSlot">
+                <p :class="slotProps.item.status">
+                  <i class="pi pi-flag"></i>{{ slotProps.item.status }}
+                </p>
+                <p><i class="pi pi-user"></i>{{ slotProps.item.owner }}</p>
+                <p><i class="pi pi-comment"></i>{{ slotProps.item.comment }}</p>
+              </div>
             </template>
           </Timeline>
         </div>
+        
       </div>
     </div>
   </section>
@@ -95,7 +102,7 @@ export default {
         eventId: callback._id,
         objectId: getIds,
       };
-
+    
       if (callback.objectsArray.length <= 0) {
         this.$store.dispatch("getEventObjects", payload);
       }
@@ -113,9 +120,13 @@ export default {
 };
 </script>
 
+<style>
+.p-timeline {
+  align-items: flex-start;
+}
+</style>
+
 <style scoped>
-
-
 .timeline {
   padding: 5px 10px;
   background: var(--bg-s2);
@@ -123,12 +134,19 @@ export default {
   margin: 0 10px !important;
   text-align: left;
 }
+
+.timelineSlot {
+  min-height: 15vh;
+  max-height: 25vh;
+}
+
 .timeline p {
   background: var(--bg-s3);
   width: 10vw;
   border-radius: 5px;
   padding: 5px 5px;
   margin-top: 0;
+  word-wrap: break-word;
 }
 
 .timeline p i {
@@ -179,24 +197,20 @@ export default {
   align-content: center;
 }
 .details-button {
-  height: 50%;
+  
   align-self: center;
   margin-left: auto;
-  margin-right: 20px;
+
+}
+
+.details-button button{
+  margin-right:20px;
 }
 
 .statusDisplay {
   border-radius: 6px;
   border: black 1px solid;
   padding: 0px 4px;
-}
-
-.statusDisplayGood {
-  background: var(--ac-good);
-}
-
-.statusDisplayBad {
-  background: var(--ac-bad);
 }
 
 .picker-item {
@@ -220,5 +234,21 @@ export default {
 .loanobjectDetails {
   display: flex;
   flex-wrap: wrap;
+}
+
+.Submitted {
+  background: var(--bg-s2) !important;
+}
+
+.Rejected {
+  background: var(--ac-bad) !important;
+}
+
+.Approved {
+  background: var(--ac-good) !important;
+}
+
+.Reviewed {
+  background: rgb(34, 240, 205) !important;
 }
 </style>

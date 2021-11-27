@@ -91,8 +91,8 @@ export default {
     },
     setObject(){
       this.getObjects()
-      .then((res) => {
-        console.log(res)
+      .then(() => {
+        
         this.pickerData[0] = this.$store.getters.objectGetter})
       
     }

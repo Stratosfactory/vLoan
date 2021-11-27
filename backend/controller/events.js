@@ -15,7 +15,7 @@ exports.createEvent = ((req, res, next) => {
     const loanStartDate = new Date(req.body.loanStart)
     const loanEndDate = new Date(req.body.loanEnd)
     const activeWorkflow = "Submitted"
-    const workflowState = { status: "Submitted", owner: req.email }
+    const workflowState = { status: "Submitted", owner: req.email, comment: "Submitted a workflow" }
 
 
 
@@ -223,6 +223,48 @@ exports.getEventTasks = ((req, res, next) => {
             const error = new Error("Failed to fetch Event Tasks")
             error.statusCode = 500;
             next(error);
+        })
+
+})
+
+exports.updateWorkflow = ((req, res, next) => {
+
+    const validationErrors = validationResult(req)
+    if (!validationErrors.isEmpty()) {
+        const error = new Error("Request contains invalid or missing data")
+        error.statusCode = 400
+        throw error
+    }
+
+    const id = req.body.id
+    const workflow = req.body.workflow
+    const comment = req.body.comment
+    const email = req.email
+
+    let payload = {
+        status: workflow,
+        owner: email,
+        comment: comment
+    }
+
+    Event.findById(id)
+        .then((foundEvent) => {
+            foundEvent.workflowState.push(payload)
+            foundEvent.activeWorkflow = workflow
+
+            foundEvent.save()
+                .then(() => {
+                    res.status(200).json({
+                        message: "Workflow successfully updated"
+                    })
+                })
+
+        })
+        .catch((err) => {
+            console.log(err)
+            const error = new Error("Event-ID does not exist")
+            error.statusCode = 500
+            next(error)
         })
 
 })

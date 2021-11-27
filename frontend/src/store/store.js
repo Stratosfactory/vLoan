@@ -43,7 +43,7 @@ const store = createStore({
 
                 }
             }
-            console.log(payload)
+
         },
         setObjects(state, payload) {
 
@@ -55,7 +55,7 @@ const store = createStore({
 
         },
         toastServiceHandler(state, payload) {
-            console.log(payload)
+
             state.toast.type = payload.type
             state.toast.message = payload.message
         },
@@ -106,8 +106,17 @@ const store = createStore({
                 item.loanEndDate = new Date(item.loanEndDate).toLocaleString(
                     "de-DE", { year: "numeric", month: "2-digit", day: "2-digit" }
                 );
+
+                if (item.activeWorkflow === "Submitted") {
+                    item["workflowOptions"] = ["Review", "Reviewed"]
+                } else { item["workflowOptions"] = ["Approve", "Approved"] }
+
+
+
+                item["clicked"] = false;
             }
             state.eventTasks = payload;
+
         }
 
     },
@@ -129,6 +138,30 @@ const store = createStore({
         },
         getEventTasks(state) {
             return state.eventTasks
+        },
+        eventCalendarGetter(state) {
+            let calendarEvents = []
+            if (state.events) {
+                calendarEvents = state.events.map((event) => {
+                    let startDateObj = {
+                        startDay: event.loanStartDate.split(".")[0],
+                        startMonth: event.loanStartDate.split(".")[1],
+                        startYear: event.loanStartDate.split(".")[2]
+                    }
+                    let endDateObj = {
+                        endDay: event.loanEndDate.split(".")[0],
+                        endMonth: event.loanEndDate.split(".")[1],
+                        endYear: event.loanEndDate.split(".")[2]
+                    }
+                    return {
+                        title: event.loanName,
+                        start: `${startDateObj.startYear}-${startDateObj.startMonth}-${startDateObj.startDay}`,
+                        end: `${endDateObj.endYear}-${endDateObj.endMonth}-${endDateObj.endDay}`,
+                        description: "HALLO WELT"
+                    }
+                })
+            }
+            return calendarEvents
         }
     },
     actions: {
@@ -261,6 +294,7 @@ const store = createStore({
         getEventTasks(context) {
             axios.get("http://localhost:3000/vloanapi/events/eventtasks", { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
                 .then((res) => {
+
                     context.commit("setEventTasks", res.data.eventTasks)
                 })
                 .catch((err) => {
@@ -269,6 +303,25 @@ const store = createStore({
                         message: err.response.data.message
                     })
                 })
+        },
+        submitWorkflow(context, payload) {
+            axios.post("http://localhost:3000/vloanapi/events/updateworkflow", payload, { headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
+                .then((res) => {
+                    context.commit("toastServiceHandler", {
+                        type: "success",
+                        message: res.data.message
+
+                    })
+                    context.dispatch("getEventTasks")
+                })
+                .catch((err) => {
+                        context.commit("toastServiceHandler", {
+                            type: "error",
+                            message: err.response.data.message
+                        })
+                    }
+
+                )
         }
 
     }

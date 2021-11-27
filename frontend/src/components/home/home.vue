@@ -2,7 +2,10 @@
   <div class="home">
      <img src="..\..\assets\Vloan.svg">
      <p class="logoTitle">_vLoan</p>
-     
+     <footer>
+       <img src="..\..\assets\cinderstries.svg">
+       <p>by cinderstries</p>
+     </footer>
      
   </div>
 </template>
@@ -36,4 +39,13 @@ img{
   font-family: 'Chakra Petch', sans-serif;
   font-size: 6rem;
 }
+
+footer{
+  opacity: 0.5;
+}
+
+footer img{
+  height: 100px;
+}
+
 </style>

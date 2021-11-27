@@ -8,6 +8,7 @@
       <router-view></router-view>
      <login></login>
     </main>
+   
   </div>
 </template>
 
@@ -186,10 +187,12 @@ input {
   height: 25px;
   font-family: "Roboto Slab", serif;
   font-size: 1.08rem;
+  
 }
 
 input:hover {
   border: 1px solid var(--ac-s1);
+  cursor: pointer;
 }
 
 input:focus {
@@ -197,12 +200,31 @@ input:focus {
   box-shadow: 0px 0px 3px 0px var(--ac-s1);
 }
 
+textarea {
+  border: 1px solid var(--bg-s1);
+  border-radius: 3px;
+  height: 25px;
+  font-family: "Roboto Slab", serif;
+  font-size: 1.08rem;
+}
+
+textarea:hover {
+  border: 1px solid var(--ac-s1);
+}
+
+textarea:focus {
+  outline: none !important;
+  box-shadow: 0px 0px 3px 0px var(--ac-s1);
+}
+
+
 select {
   border: 1px solid var(--bg-s1);
   border-radius: 3px;
   height: 25px;
   font-family: "Roboto Slab", serif;
   font-size: 1.08rem;
+  cursor: pointer;
 }
 
 select:hover {
@@ -319,4 +341,5 @@ label{
 .eventCard div {
   margin: 5px 5px;
 }
+
 </style>

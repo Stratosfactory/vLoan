@@ -17,5 +17,10 @@ router.post("/events/createevent", [
 
 router.get("/events/getevents", isAuthorized, permitted("admin", "reviewer", "approver"), eventController.getEvents)
 router.get("/events/eventtasks", isAuthorized, permitted("admin", "reviewer", "approver"), eventController.getEventTasks)
+router.post("/events/updateworkflow", [
+    body("workflow").isLength({ min: 3 }),
+    body("comment").isLength({ min: 3 }),
+    body("id").isLength({ min: 5 })
+], isAuthorized, permitted("admin", "reviewer", "approver"), eventController.updateWorkflow)
 
 module.exports = router

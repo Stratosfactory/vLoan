@@ -2,8 +2,9 @@
   <div>
      <header>My Loan Events</header>
     <lend-scheduler></lend-scheduler>
-    <filter-menu></filter-menu>
+    <filter-menu :eventName="this.$route.params.loanName"></filter-menu>
     <event-display></event-display>
+
   </div>
 </template>
 
@@ -15,6 +16,7 @@ export default {
  components:{
    lendScheduler,eventDisplay,filterMenu
  },
+ 
 }
 </script>
 
