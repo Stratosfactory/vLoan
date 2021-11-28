@@ -1,7 +1,8 @@
 <template>
  <div class="calView">
   <FullCalendar :options="calendarOptions" />
-  <p>{{calendarOptions.events}}</p>
+  
+  <event-panel :title="eventObject.title" :loanType="eventObject.type" @togglePanel="togglePanel" v-if="panelVisible"></event-panel>
   </div>
 </template>
 
@@ -11,13 +12,20 @@ import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import eventPanel from "./eventPanel.vue"
 
 export default {
   components: {
-    FullCalendar,
+    FullCalendar,eventPanel
   },
   data() {
     return {
+      panelVisible:false,
+      eventObject:{
+        title:null,
+        type:null,
+        
+      },
       calendarOptions: {
         plugins: [
           dayGridPlugin,
@@ -34,15 +42,16 @@ export default {
         initialView: "dayGridMonth",
         height: "80vh",
         editable: true,
-        selectable: true,
+        selectable: false,
         selectMirror: true,
         dayMaxEvents: true,
         weekends: true,
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents,
-        events: this.$store.getters.eventCalendarGetter,
-        eventBackgroundColor:"crimson",
+        events: null,
+       
+        
         /* you can update a remote database when these fire:
         eventAdd:
         eventChange:
@@ -59,18 +68,29 @@ export default {
   
     };
   },
-  computed:{
-    eventGetter(){
-      return this.$store.getters.eventCalendarGetter
-    }
-  },
+  
   methods:{
-    getEvents(payload){
-      this.$store.dispatch("getEvents",payload)
+    async getEvents(payload){
+       await this.$store.dispatch("getEvents",payload)
+    },
+    async setEvents(payload){
+        this.getEvents(payload)
+        .then(()=>{
+          this.calendarOptions.events = this.$store.getters.eventCalendarGetter
+        })
+    },
+    handleEventClick(info){
+     this.eventObject.title = info.event.title
+     this.eventObject.type = info.event
+     this.togglePanel(true)
+     
+    },
+    togglePanel(bool){
+      this.panelVisible = bool
     }
   },
-  mounted(){
-    this.getEvents()
+  async mounted (){
+    this.setEvents()
   }
 };
 </script>

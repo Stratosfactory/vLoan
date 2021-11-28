@@ -154,10 +154,14 @@ const store = createStore({
                         endYear: event.loanEndDate.split(".")[2]
                     }
                     return {
+                        id: event._id,
                         title: event.loanName,
                         start: `${startDateObj.startYear}-${startDateObj.startMonth}-${startDateObj.startDay}`,
                         end: `${endDateObj.endYear}-${endDateObj.endMonth}-${endDateObj.endDay}`,
-                        description: "HALLO WELT"
+                        loanPurpose: event.loanPurpose,
+                        status: event.activeWorkflow,
+                        objects: event.objects,
+
                     }
                 })
             }
@@ -170,7 +174,7 @@ const store = createStore({
             if (!payload) {
                 payload = { loanStartDate: new Date().toISOString().substr(0, 10) }
             }
-            axios
+            return axios
                 .get("http://localhost:3000/vloanapi/events/getevents", { params: payload, headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
                 .then((res) => {
                     context.commit("setEvents", res.data.events)
