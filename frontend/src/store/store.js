@@ -171,9 +171,7 @@ const store = createStore({
     actions: {
         getEvents(context, payload) {
 
-            if (!payload) {
-                payload = { loanStartDate: new Date().toISOString().substr(0, 10) }
-            }
+
             return axios
                 .get("http://localhost:3000/vloanapi/events/getevents", { params: payload, headers: { Authorization: "Bearer " + localStorage.getItem("token") } })
                 .then((res) => {

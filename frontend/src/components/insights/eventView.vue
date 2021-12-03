@@ -76,7 +76,11 @@ export default {
     async setEvents(payload){
         this.getEvents(payload)
         .then(()=>{
-          this.calendarOptions.events = this.$store.getters.eventCalendarGetter
+          let eventArr = this.$store.getters.eventCalendarGetter
+          for(let event of eventArr){
+            event["color"] ="crimson" 
+          }
+          this.calendarOptions.events = eventArr
         })
     },
     handleEventClick(info){
